@@ -5,4 +5,8 @@ from django.http import HttpResponse
 # Create your views here.
 def homepage(request):
     return render(request=request,
-                  template_name='mysite/main/templates/main/home.html')
+                  template_name='main/home.html')
+
+def profile(request):
+    return render(request=request,
+                  template_name='main/profile.html')

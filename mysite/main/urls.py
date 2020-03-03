@@ -6,4 +6,5 @@ app_name = 'main'  # here for namespacing of urls.
 
 urlpatterns = [
     path("", views.homepage, name="homepage"),
+    path("profile", views.profile, name="profile"),
 ]

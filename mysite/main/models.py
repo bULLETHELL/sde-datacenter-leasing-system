@@ -9,7 +9,7 @@ class Names(models.Model):
 
 class Users(models.Model):
     username = models.CharField(max_length=50)
-    Password = models.CharField()
+    Password = models.CharField(max_length=50)
 
 
 class UserTypes(models.Model):
