@@ -10,3 +10,7 @@ def homepage(request):
 def profile(request):
     return render(request=request,
                   template_name='main/profile.html')
+
+def lease(request):
+    return render(request=request,
+                  template_name='main/lease.html')
