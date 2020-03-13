@@ -1,0 +1,16 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+
+
+# Create your views here.
+def homepage(request):
+    return render(request=request,
+                  template_name='main/home.html')
+
+def profile(request):
+    return render(request=request,
+                  template_name='main/profile.html')
+
+def lease(request):
+    return render(request=request,
+                  template_name='main/lease.html')

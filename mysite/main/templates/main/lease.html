@@ -1,0 +1,51 @@
+{% extends 'main/header.html' %}
+<body>
+{% block content %}
+{% comment '' %}
+{% for itemType in InventoryItemType %}
+<h1 id="{InventoryItemType}"></h1>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Owner</th>
+            <th>OS</th>
+            {% if itemType == ESXI %}
+            <th>VM</th>
+            {% endif %}
+            <th>Lease</th>
+            <th>Book</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in InventoryItem %}
+        {% if item.IsAvailable == true %}
+        <tr>
+            <td>item.itemName</td>
+            <td>item.itemOS</td>
+            {% if itemType == ESXI %}
+            <!-- Modal Trigger -->
+            <button data-target="{item.itemName} + VM" class="btn modal-trigger">VM's</button>
+
+            <!-- Modal Structure -->
+            <div id="{item.itemName} + VM" class="modal">
+                <div class="modal-content">
+                    <h4>{item.itemName}</h4>
+                    <p>A bunch of text</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                </div>
+            </div>
+            {% endif %}
+            <td>item.itemName</td>
+            <td>item.itemName</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
+{% endcomment %}
+{% endblock content %}
+</body>
