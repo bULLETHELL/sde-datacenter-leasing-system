@@ -11,27 +11,6 @@ class Names(models.Model):
     last_name = models.CharField(max_length=50)
 
 
-class UserTypes(models.Model):
-    userType = models.CharField(max_length=50)
-
-
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    userType = models.ForeignKey(UserTypes, on_delete=models.CASCADE)
-    Name = models.ForeignKey(Names, on_delete=models.CASCADE)
-
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
-
-
 class VMLoans(models.Model):
     pass
 
