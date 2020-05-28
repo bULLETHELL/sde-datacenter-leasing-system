@@ -64,5 +64,5 @@ class Reservations(models.Model):
     reservingUser = models.ForeignKey(User, on_delete=models.CASCADE)
     reservationStartDate = models.DateField(auto_now=True)
     reservationEndDate = models.DateField()
-    reservedFor = models.ForeignKey(User, on_delete=models.CASCADE)
+    reservedFor = models.ForeignKey(User, related_name="reservedForUser", on_delete=models.CASCADE)
     reservationPurpose = models.ForeignKey(Purposes, on_delete=models.CASCADE)
