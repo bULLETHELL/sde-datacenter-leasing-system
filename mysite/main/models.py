@@ -7,8 +7,8 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class Names(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    firstName = models.CharField(max_length=50)
+    lastName = models.CharField(max_length=50)
 
 
 class VMLoans(models.Model):
@@ -19,24 +19,16 @@ class VMs(models.Model):
     pass
 
 
-class Reservations(models.Model):
-    pass
-
-
 class Purposes(models.Model):
-    pass
+    purposeDescription = models.CharField(max_length=200)
 
 
-class Loans(models.Model):
-    pass
-
-
-class ItemDesciption(models.Model):
-    pass
+class ItemDescription(models.Model):
+    itemDescription = models.CharField(max_length=200)
 
 
 class InventoryItemType(models.Model):
-    pass
+    inventoryItemType = models.CharField(max_length=50)
 
 
 class ItemOS(models.Model):
@@ -45,7 +37,7 @@ class ItemOS(models.Model):
 
 class InventoryItems(models.Model):
     itemName = models.CharField(max_length=50)
-    itemmDescription = models.ForeignKey(ItemDesciption, on_delete=models.CASCADE)
+    itemDescription = models.ForeignKey(ItemDescription, on_delete=models.CASCADE)
     itemType = models.ForeignKey(InventoryItemType, on_delete=models.CASCADE)
     itemOS = models.ForeignKey(ItemOS, on_delete=models.CASCADE)
     itemAvailable = models.BooleanField()
@@ -56,4 +48,21 @@ class InventoryItems_has_ItemSoftware(models.Model):
 
 
 class ItemSoftware(models.Model):
-    pass
+    itemSoftware = models.CharField(max_length=200)
+
+
+class Loans(models.Model):
+    loanedItem = models.ForeignKey(InventoryItems, on_delete=models.CASCADE)
+    loanStartDate = models.DateField()
+    loanEndDate = models.DateField()
+    loaningUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    loanPurpose = models.ForeignKey(Purposes, on_delete=models.CASCADE)
+
+
+class Reservations(models.Model):
+    reservedItem = models.ForeignKey(InventoryItems, on_delete=models.CASCADE)
+    reservingUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    reservationStartDate = models.DateField(auto_now=True)
+    reservationEndDate = models.DateField()
+    reservedFor = models.ForeignKey(User, on_delete=models.CASCADE)
+    reservationPurpose = models.ForeignKey(Purposes, on_delete=models.CASCADE)
