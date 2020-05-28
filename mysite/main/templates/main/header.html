@@ -20,8 +20,17 @@
         </ul>
         </div>
     </nav>
+    <form id="login" class="col s12 login_box" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+      <div class="col s12">
+        <a class="waves-effect waves-light btn" style="width:100%;background-color:#4267B1;">Log in</a>
+        <p class="center">Not registered? <a href="register/">Create an account</a></p>
+      </div>
+    </form>
+
     <!-- Login Form -->
-    <form id="login" class="col s12 login_box" action="" method="post">
+    <!--><form id="login" class="col s12 login_box" action="" method="post">
         <div class="row">
           <div class="input-field col s12">
             <input id="username" type="text" required>
@@ -38,6 +47,7 @@
         </div>
     </form>
     <script type="text/javascript" src="{% static 'js/login.js' %}"></script>
+    <!-->
     {% block content %}
     {% endblock content %}
 </body>
