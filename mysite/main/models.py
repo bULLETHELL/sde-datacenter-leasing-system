@@ -6,20 +6,17 @@ from django.contrib.auth.models import AbstractUser
 
 
 # Create your models here.
-class Names(models.Model):
-    firstName = models.CharField(max_length=50)
-    lastName = models.CharField(max_length=50)
 
 
-class VMLoans(models.Model):
+class VMLoan(models.Model):
     pass
 
 
-class VMs(models.Model):
+class VM(models.Model):
     pass
 
 
-class Purposes(models.Model):
+class Purpose(models.Model):
     purposeDescription = models.CharField(max_length=200)
 
 
@@ -30,39 +27,55 @@ class ItemDescription(models.Model):
 class InventoryItemType(models.Model):
     inventoryItemType = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.inventoryItemType
+
 
 class ItemOS(models.Model):
     itemOS = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.itemOS
 
-class InventoryItems(models.Model):
+
+class ItemSoftware(models.Model):
+    itemSoftwareName = models.CharField(max_length=50)
+    itemSoftware = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.itemSoftwareName
+
+
+class InventoryItem(models.Model):
     itemName = models.CharField(max_length=50)
     itemDescription = models.ForeignKey(ItemDescription, on_delete=models.CASCADE)
+    itemSoftware = models.ManyToManyField(ItemSoftware)
     itemType = models.ForeignKey(InventoryItemType, on_delete=models.CASCADE)
     itemOS = models.ForeignKey(ItemOS, on_delete=models.CASCADE)
     itemAvailable = models.BooleanField()
 
-
-class InventoryItems_has_ItemSoftware(models.Model):
-    pass
-
-
-class ItemSoftware(models.Model):
-    itemSoftware = models.CharField(max_length=200)
+    def __str__(self):
+        return self.itemName
 
 
-class Loans(models.Model):
-    loanedItem = models.ForeignKey(InventoryItems, on_delete=models.CASCADE)
+class Loan(models.Model):
+    loanedItem = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
     loanStartDate = models.DateField()
     loanEndDate = models.DateField()
     loaningUser = models.ForeignKey(User, on_delete=models.CASCADE)
-    loanPurpose = models.ForeignKey(Purposes, on_delete=models.CASCADE)
+    loanPurpose = models.ForeignKey(Purpose, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.loaningUser} - {self.loanedItem}"
 
 
-class Reservations(models.Model):
-    reservedItem = models.ForeignKey(InventoryItems, on_delete=models.CASCADE)
+class Reservation(models.Model):
+    reservedItem = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
     reservingUser = models.ForeignKey(User, on_delete=models.CASCADE)
     reservationStartDate = models.DateField(auto_now=True)
     reservationEndDate = models.DateField()
     reservedFor = models.ForeignKey(User, related_name="reservedForUser", on_delete=models.CASCADE)
-    reservationPurpose = models.ForeignKey(Purposes, on_delete=models.CASCADE)
+    reservationPurpose = models.ForeignKey(Purpose, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.reservingUser} reserved {self.reservedItem} for {self.reservedFor}"
