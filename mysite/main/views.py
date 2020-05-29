@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import NewUserForm, LoginForm
+from .models import 
 
 # Create your views here.
 def homepage(request):
