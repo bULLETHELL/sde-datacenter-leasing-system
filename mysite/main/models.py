@@ -9,7 +9,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Purpose(models.Model):
-    purposeDescription = models.CharField(max_length=200)
+    purposeDescription = models.TextField(max_length=200)
 
 
 class ItemDescription(models.Model):
