@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import NewUserForm, LoginForm
+from .models import InventoryItem, InventoryItemType
 
 
 # Create your views here.
@@ -19,7 +20,7 @@ def profile(request):
 def lease(request):
     return render(request=request,
                   template_name='main/lease.html',
-                  context={'loginForm':LoginForm})
+                  context={'loginForm':LoginForm, 'inventoryItems':InventoryItem.objects.all, 'inventoryItemTypes':InventoryItemType.objects.all})
 
 def login_request(request):
     if request.method == 'POST':

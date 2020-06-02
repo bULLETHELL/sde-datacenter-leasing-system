@@ -1,9 +1,8 @@
 {% extends 'main/header.html' %}
 <body>
 {% block content %}
-{% comment '' %}
-{% for itemType in InventoryItemType %}
-<h1 id="{InventoryItemType}"></h1>
+{% for itemType in inventoryItemTypes %}
+<h1 id="{{itemType}}"></h1>
 <table>
     <thead>
         <tr>
@@ -18,19 +17,19 @@
         </tr>
     </thead>
     <tbody>
-        {% for item in InventoryItem %}
+        {% for item in inventoryItems %}
         {% if item.IsAvailable == true %}
         <tr>
             <td>item.itemName</td>
             <td>item.itemOS</td>
             {% if itemType == ESXI %}
             <!-- Modal Trigger -->
-            <button data-target="{item.itemName} + VM" class="btn modal-trigger">VM's</button>
+            <button data-target="{{item.itemName}} + VM" class="btn modal-trigger">VM's</button>
 
             <!-- Modal Structure -->
-            <div id="{item.itemName} + VM" class="modal">
+            <div id="{{item.itemName}} + VM" class="modal">
                 <div class="modal-content">
-                    <h4>{item.itemName}</h4>
+                    <h4>{{item.itemName}}</h4>
                     <p>A bunch of text</p>
                 </div>
                 <div class="modal-footer">
@@ -38,14 +37,13 @@
                 </div>
             </div>
             {% endif %}
-            <td>item.itemName</td>
-            <td>item.itemName</td>
+            <td>{{item.itemName}}</td>
+            <td>{{item.itemName}}</td>
         </tr>
         {% endif %}
         {% endfor %}
     </tbody>
 </table>
 {% endfor %}
-{% endcomment %}
 {% endblock content %}
 </body>
