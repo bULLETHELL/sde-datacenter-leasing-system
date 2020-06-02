@@ -10,17 +10,21 @@ from .models import InventoryItem, InventoryItemType
 def homepage(request):
     return render(request=request,
                   template_name='main/home.html',
-                  context={'loginForm':LoginForm})
+                  context={'loginForm': LoginForm})
+
 
 def profile(request):
     return render(request=request,
                   template_name='main/profile.html',
-                  context={'loginForm':LoginForm})
+                  context={'loginForm': LoginForm})
+
 
 def lease(request):
     return render(request=request,
                   template_name='main/lease.html',
-                  context={'loginForm':LoginForm, 'inventoryItems':InventoryItem.objects.all, 'inventoryItemTypes':InventoryItemType.objects.all})
+                  context={'loginForm': LoginForm, 'inventoryItems': InventoryItem.objects.all,
+                           'inventoryItemTypes': InventoryItemType.objects.all})
+
 
 def login_request(request):
     if request.method == 'POST':
@@ -35,12 +39,14 @@ def login_request(request):
 
     form = LoginForm
     return render(request=request,
-                  template_name = 'main/header.html',
-                  context={'form':form})
+                  template_name='main/header.html',
+                  context={'form': form})
+
 
 def logout_request(request):
     logout(request)
     return redirect('main:homepage')
+
 
 def register(request):
     if request.method == 'POST':
@@ -50,13 +56,13 @@ def register(request):
             username = form.cleaned_data.get('username')
             login(request, user)
             return redirect('main:homepage')
-        
+
         else:
             return render(request=request,
-                  template_name = 'main/register.html',
-                  context={'form':form, 'loginForm':LoginForm})
+                          template_name='main/register.html',
+                          context={'form': form, 'loginForm': LoginForm})
 
-    form = NewUserForm              
+    form = NewUserForm
     return render(request=request,
-                  template_name = 'main/register.html',
-                  context={'form':form, 'loginForm':LoginForm})
+                  template_name='main/register.html',
+                  context={'form': form, 'loginForm': LoginForm})

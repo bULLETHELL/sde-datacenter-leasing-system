@@ -8,14 +8,6 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 
-class VMLoan(models.Model):
-    pass
-
-
-class VM(models.Model):
-    pass
-
-
 class Purpose(models.Model):
     purposeDescription = models.CharField(max_length=200)
 
@@ -61,6 +53,14 @@ class InventoryItem(models.Model):
         return self.itemName
 
 
+class VM(models.Model):
+    VmName = models.CharField(max_length=50)
+    vmEsxiHost = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
+    vmDescription = models.ForeignKey(ItemDescription, on_delete=models.CASCADE)
+    vmOS = models.ForeignKey(ItemOS, on_delete=models.CASCADE)
+    vmType = models.ForeignKey(InventoryItemType, on_delete=models.CASCADE)
+    #vmHost = models.CharField(max_length=50)
+
 class Loan(models.Model):
     loanedItem = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
     loanStartDate = models.DateField()
@@ -70,6 +70,14 @@ class Loan(models.Model):
 
     def __str__(self):
         return f"{self.loaningUser} - {self.loanedItem}"
+
+
+class VMLoan(models.Model):
+    loanStartDate = models.DateField(auto_now=True)
+    loanEndDate = models.DateField(auto_now=True)
+    loaningUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    loanedVm = models.ForeignKey(VM, on_delete=models.CASCADE)
+    loanPurpose = models.ForeignKey(Purpose, on_delete=models.CASCADE)
 
 
 class Reservation(models.Model):
