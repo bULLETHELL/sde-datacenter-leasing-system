@@ -23,6 +23,9 @@ class Purpose(models.Model):
 class ItemDescription(models.Model):
     itemDescription = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.itemDescription
+
 
 class InventoryItemType(models.Model):
     inventoryItemType = models.CharField(max_length=50)
