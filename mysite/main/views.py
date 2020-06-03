@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .forms import NewUserForm, LoginForm
-from .models import InventoryItem, InventoryItemType
+from .forms import NewUserForm, LoginForm, LeaseForm
+from .models import InventoryItem, InventoryItemType, Loan, User
+from datetime import date
 
 
 # Create your views here.
@@ -20,7 +21,20 @@ def profile(request):
 def lease(request):
     return render(request=request,
                   template_name='main/lease.html',
-                  context={'loginForm':LoginForm, 'inventoryItems':InventoryItem.objects.all, 'inventoryItemTypes':InventoryItemType.objects.all})
+                  context={'loginForm':LoginForm, 'inventoryItems':InventoryItem.objects.all, 'inventoryItemTypes':InventoryItemType.objects.all, 'loans':Loan.objects.all})
+
+def lease_request(request):
+    if request.method == 'POST':
+        leaseForm = LeaseForm(request.POST)
+        if leaseForm.is_valid():
+            itemName = leaseForm.cleaned_data.get('itemName')
+            itemDescription = leaseForm.cleaned_data.get('itemDescription')
+            itemSoftware = leaseForm.cleaned_data.get('itemSoftware')
+            itemType = leaseForm.cleaned_data.get('itemType')
+            itemOS = leaseForm.cleaned_data.get('itemOS')
+            itemAvailable = leaseForm.cleaned_data.get('itemAvailable')
+
+            newLoan = Loan(loanedItem = model, loanStartDate = )
 
 def login_request(request):
     if request.method == 'POST':

@@ -1,8 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django import forms
-from django.forms import widgets
-from django.forms.widgets import TextInput, PasswordInput
+from django.forms import widgets, ModelForm
+from django.forms.widgets import TextInput, PasswordInput, DateInput
+from .models import InventoryItem, Loan
 
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -22,3 +23,19 @@ class NewUserForm(UserCreationForm):
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=TextInput(attrs={'placeholder': 'UNI-LOGIN'}))
     password = forms.CharField(widget=PasswordInput(attrs={'placeholder': 'PASSWORD'}))
+
+class LeaseForm(ModelForm):
+    class Meta:
+        model = Loan
+        fields = 'loanedItem', 'loanStartDate', 'loanEndDate', 'loaningUser', 'loanPurpose'
+        widgets = {
+            'loanedItem': TextInput(attrs={'readonly': 'readonly'}),
+            'loanStartDate': TextInput(attrs={'readonly':'readonly'}),
+            'loanEndDate': DateInput,
+            'loaningUser': TextInput(attrs={'readonly':'readonly'}),
+            'loanPurpose': TextInput(attrs={'placeholder': 'Purpose for loan'})
+        }
+
+    def save():
+        
+

@@ -2,29 +2,27 @@
 <body>
 {% block content %}
 {% for itemType in inventoryItemTypes %}
-<h1 id="{{itemType}}"></h1>
+<h3 id="{{itemType}}">{{itemType}}</h3>
 <table>
     <thead>
         <tr>
             <th>Name</th>
-            <th>Owner</th>
             <th>OS</th>
             {% if itemType == ESXI %}
             <th>VM</th>
             {% endif %}
-            <th>Lease</th>
             <th>Book</th>
         </tr>
     </thead>
     <tbody>
         {% for item in inventoryItems %}
-        {% if item.IsAvailable == true %}
+        {% if item.IsAvailable == true and item.itemType == itemType %}
         <tr>
-            <td>item.itemName</td>
-            <td>item.itemOS</td>
+            <td>{{item.itemName}}</td>
+            <td>{{item.itemOS}}</td>
             {% if itemType == ESXI %}
             <!-- Modal Trigger -->
-            <button data-target="{{item.itemName}} + VM" class="btn modal-trigger">VM's</button>
+            <td><button data-target="{{item.itemName}} + VM" class="btn modal-trigger">VM's</button></td>
 
             <!-- Modal Structure -->
             <div id="{{item.itemName}} + VM" class="modal">
@@ -37,8 +35,16 @@
                 </div>
             </div>
             {% endif %}
-            <td>{{item.itemName}}</td>
-            <td>{{item.itemName}}</td>
+            <!-- Modal Trigger Loan -->
+            <td><button data-target="{{item.itemName}}" class="btn modal-trigger">Lease Item</button></td>
+
+            <!-- Modal Structure Loan -->
+            <div id="{{item.itemName}}" class="modal">
+                <div class="modal-content">
+                    <h4>{{item.itemName}}</h4>
+                    
+                </div>
+            </div>
         </tr>
         {% endif %}
         {% endfor %}
