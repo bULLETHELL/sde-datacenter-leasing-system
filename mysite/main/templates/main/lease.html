@@ -49,13 +49,14 @@
                     <label for="formloanstartdate">Loan Start Date</label><br>
                     <input type="text" name="formloanstartdate" value="{{datetoday}}" readonly="readonly">
                     <label for="formloanenddate">Loan End Date</label><br>
-                    <input type="text" name="formloanenddate" value="{{datetoday}}">
+                    <input type="text" class="datepicker" name="formloanenddate" value="{{datetoday}}">
                     <button class="btn waves-effect waves-light" type="submit" href="/lease_request">Lease Item</button>
                     </form>
                 </div>
             </div>
             <!-- Modal trigger -->
             <script>$(document).ready(function(){$('.modal').modal();});</script>
+            <script>$(document).ready(function(){$('.datepicker').datepicker();});</script>
         </tr>
         {% endif %}
         {% endfor %}
