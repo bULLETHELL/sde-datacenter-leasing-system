@@ -42,8 +42,10 @@
             <div id="{{item.itemName}}{{item.id}}" class="modal">
                 <div class="modal-content">
                     <h4>{{item.itemName}}</h4>
-                    <form>
-                    <input type="text" name="formitemid{{item.id}}" value="{{item.id}}">
+                    {% csrf_token %}
+                
+                    <form method="POST" action="/lease_request/">
+                    <input type="hidden" name="formitemid{{item.id}}" value="{{item.id}}">
                     <label for="formitemname{{item.itemName}}">Item</label><br>
                     <input type="text" name="formitemname{{item.itemName}}" value="{{item.itemName}}" readonly="readonly">
                     <label for="formloanstartdate">Loan Start Date</label><br>
@@ -54,7 +56,7 @@
                     <input type="text" name="formloaninguser" value="{{user.username}}" readonly="readonly">
                     <label for="formloanpurpose">Loan Purpose</label><br>
                     <input type="text" name="formloanpurpose" placeholder="Purpose for loan">
-                    <button class="btn waves-effect waves-light" type="submit" href="/lease_request">Lease Item</button>
+                    <button class="btn waves-effect waves-light" type="submit">Lease Item</button>
                     </form>
                 </div>
             </div>
