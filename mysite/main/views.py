@@ -31,21 +31,14 @@ def lease(request):
 
 def lease_request(request):
     if request.method == 'POST':
-        leaseForm = LeaseForm(data=request.POST)
-        if leaseForm.is_valid():
-            itemId = leaseForm.cleaned_data.get('id')
-            loanedItem = leaseForm.cleaned_data.get('loanedItem')
-            loanStartDate = leaseForm.cleaned_data.get('loanStartDate')
-            loanEndDate = leaseForm.cleaned_data.get('loanEndDate')
-            loaningUser = leaseForm.cleaned_data.get('loaningUser')
-            loanPurpose = leaseForm.cleaned_data.get('loanPurpose')
-            return redirect('main/lease.html')
+        print(request.POST.get("itemID"))
+        return redirect("main:lease")
 
-    leaseForm = LeaseForm
+    #leaseForm = LeaseForm
 
-    return render(request=request,
-                  template_name='main/lease.html',
-                  context={'leaseForm': leaseForm})
+    #return render(request=request,
+    #              template_name='main/lease.html',
+    #              context={'leaseForm': leaseForm})
 
 def login_request(request):
     if request.method == 'POST':

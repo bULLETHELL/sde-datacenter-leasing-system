@@ -42,21 +42,20 @@
             <div id="{{item.itemName}}{{item.id}}" class="modal">
                 <div class="modal-content">
                     <h4>{{item.itemName}}</h4>
-                    {% csrf_token %}
-                
                     <form method="POST" action="/lease_request/">
-                    <input type="hidden" name="formitemid{{item.id}}" value="{{item.id}}">
-                    <label for="formitemname{{item.itemName}}">Item</label><br>
-                    <input type="text" name="formitemname{{item.itemName}}" value="{{item.itemName}}" readonly="readonly">
-                    <label for="formloanstartdate">Loan Start Date</label><br>
-                    <input type="text" name="formloanstartdate" value="{{datetoday}}" readonly="readonly">
-                    <label for="formloanenddate">Loan End Date</label><br>
-                    <input type="text" class="datepicker" name="formloanenddate" value="{{datetoday}}">
-                    <label for="formloaninguser">Loaning User</label><br>
-                    <input type="text" name="formloaninguser" value="{{user.username}}" readonly="readonly">
-                    <label for="formloanpurpose">Loan Purpose</label><br>
-                    <input type="text" name="formloanpurpose" placeholder="Purpose for loan">
-                    <button class="btn waves-effect waves-light" type="submit">Lease Item</button>
+                        {% csrf_token %}
+                        <input type="hidden" name="itemID" value="{{item.id}}">
+                        <label>Item</label><br>
+                        <input type="text" name="itemName" value="{{item.itemName}}" readonly="readonly">
+                        <label>Loan Start Date</label><br>
+                        <input type="text" name="loanStartDate" value="{{datetoday}}" readonly="readonly">
+                        <label>Loan End Date</label><br>
+                        <input type="text" class="datepicker" name="loanEndDate" value="{{datetoday}}">
+                        <label>Loaning User</label><br>
+                        <input type="text" name="loaningUser" value="{{user.username}}" readonly="readonly">
+                        <label>Loan Purpose</label><br>
+                        <input type="text" name="loanPurpose" placeholder="Purpose for loan">
+                        <button class="btn waves-effect waves-light" type="submit">Lease Item</button>
                     </form>
                 </div>
             </div>
