@@ -50,6 +50,10 @@
                     <input type="text" name="formloanstartdate" value="{{datetoday}}" readonly="readonly">
                     <label for="formloanenddate">Loan End Date</label><br>
                     <input type="text" class="datepicker" name="formloanenddate" value="{{datetoday}}">
+                    <label for="formloaninguser">Loaning User</label><br>
+                    <input type="text" name="formloaninguser" value="{{user.username}}" readonly="readonly">
+                    <label for="formloanpurpose">Loan Purpose</label><br>
+                    <input type="text" name="formloanpurpose" placeholder="Purpose for loan">
                     <button class="btn waves-effect waves-light" type="submit" href="/lease_request">Lease Item</button>
                     </form>
                 </div>

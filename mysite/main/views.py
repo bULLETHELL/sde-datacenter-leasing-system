@@ -27,7 +27,7 @@ def lease(request):
     # todayFormattedCorrectly = f"{todayList[0]}-{todayList[1]}-{todayList[2]}"
     return render(request=request,
                   template_name='main/lease.html',
-                  context={'loginForm':LoginForm, 'inventoryItems':InventoryItem.objects.all, 'inventoryItemTypes':InventoryItemType.objects.all, 'loans':Loan.objects.all, 'leaseForm':LeaseForm, 'datetoday':todayFormatted})
+                  context={'loginForm':LoginForm, 'inventoryItems':InventoryItem.objects.all, 'inventoryItemTypes':InventoryItemType.objects.all, 'loans':Loan.objects.all, 'leaseForm':LeaseForm, 'datetoday':todayFormatted, 'user':request.user})
 
 def lease_request(request):
     if request.method == 'POST':
