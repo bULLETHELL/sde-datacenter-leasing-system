@@ -21,22 +21,31 @@ def profile(request):
 
 
 def lease(request):
+    today = date.today()
+    todayFormatted = today.strftime("%d/%m/%Y")
+    # todayList = todayFormatted.split('/')
+    # todayFormattedCorrectly = f"{todayList[0]}-{todayList[1]}-{todayList[2]}"
     return render(request=request,
                   template_name='main/lease.html',
-                  context={'loginForm':LoginForm, 'inventoryItems':InventoryItem.objects.all, 'inventoryItemTypes':InventoryItemType.objects.all, 'loans':Loan.objects.all})
+                  context={'loginForm':LoginForm, 'inventoryItems':InventoryItem.objects.all, 'inventoryItemTypes':InventoryItemType.objects.all, 'loans':Loan.objects.all, 'leaseForm':LeaseForm, 'datetoday':todayFormatted})
 
 def lease_request(request):
     if request.method == 'POST':
-        leaseForm = LeaseForm(request.POST)
+        leaseForm = LeaseForm(data=request.POST)
         if leaseForm.is_valid():
-            itemName = leaseForm.cleaned_data.get('itemName')
-            itemDescription = leaseForm.cleaned_data.get('itemDescription')
-            itemSoftware = leaseForm.cleaned_data.get('itemSoftware')
-            itemType = leaseForm.cleaned_data.get('itemType')
-            itemOS = leaseForm.cleaned_data.get('itemOS')
-            itemAvailable = leaseForm.cleaned_data.get('itemAvailable')
+            itemId = leaseForm.cleaned_data.get('id')
+            loanedItem = leaseForm.cleaned_data.get('loanedItem')
+            loanStartDate = leaseForm.cleaned_data.get('loanStartDate')
+            loanEndDate = leaseForm.cleaned_data.get('loanEndDate')
+            loaningUser = leaseForm.cleaned_data.get('loaningUser')
+            loanPurpose = leaseForm.cleaned_data.get('loanPurpose')
+            return redirect('main/lease.html')
 
-            newLoan = Loan(loanedItem = model, loanStartDate = )
+    leaseForm = LeaseForm
+
+    return render(request=request,
+                  template_name='main/lease.html',
+                  context={'leaseForm': leaseForm})
 
 def login_request(request):
     if request.method == 'POST':

@@ -63,7 +63,7 @@ class VM(models.Model):
 
 class Loan(models.Model):
     loanedItem = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
-    loanStartDate = models.DateField()
+    loanStartDate = models.DateField(auto_now_add=True)
     loanEndDate = models.DateField()
     loaningUser = models.ForeignKey(User, on_delete=models.CASCADE)
     loanPurpose = models.ForeignKey(Purpose, on_delete=models.CASCADE)

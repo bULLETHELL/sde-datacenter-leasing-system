@@ -24,10 +24,18 @@ class LoginForm(AuthenticationForm):
     username = forms.CharField(widget=TextInput(attrs={'placeholder': 'UNI-LOGIN'}))
     password = forms.CharField(widget=PasswordInput(attrs={'placeholder': 'PASSWORD'}))
 
-class LeaseForm(ModelForm):
-    class Meta:
+class LeaseForm(forms.Form):
+    itemId = forms.IntegerField(widget=TextInput(attrs={'readonly': 'readonly'}))
+    loanedItem = forms.CharField(widget=TextInput(attrs={'readonly': 'readonly'}))
+    loanStartDate = forms.DateField(widget=DateInput())
+    loanEndDate = forms.DateField(widget=DateInput(attrs={'readonly': 'readonly'}))
+    loaningUser = forms.CharField(widget=TextInput(attrs={'readonly': 'readonly'}))
+    loanPurpose = forms.CharField(widget=TextInput(attrs={'placeholder' : 'Purpose for loan'}))
+        
+    
+    """ class Meta:
         model = Loan
-        fields = 'loanedItem', 'loanStartDate', 'loanEndDate', 'loaningUser', 'loanPurpose'
+        fields = 'id', 'loanedItem', 'loanStartDate', 'loanEndDate', 'loaningUser', 'loanPurpose'
         widgets = {
             'loanedItem': TextInput(attrs={'readonly': 'readonly'}),
             'loanStartDate': TextInput(attrs={'readonly':'readonly'}),
@@ -36,6 +44,17 @@ class LeaseForm(ModelForm):
             'loanPurpose': TextInput(attrs={'placeholder': 'Purpose for loan'})
         }
 
-    def save():
+    def save(self, commit=True):
+        loan = super(LeaseForm, self).save(commit=False)
+        item = InventoryItem.objects.get(pk = 'id')
+
+        loan.loanedItem = item
+        item.itemAvailable = False
+
+        if commit:
+            loan.save() """
+
+
+        
         
 
