@@ -21,7 +21,7 @@
             <li><a href="/admin">Admin</a></li>
             {% endif %}
             <li><a href="/return">Aflever</a></li>
-            <li><a href="/profile">{{user.username}}</a></li>
+            <li><a href="/profile/{{username}}">{{user.username}}</a></li>
             <li><a href="/logout">Logout</a></li>
             {% else %}
             <li><a onclick="loginShow()"><i class="material-icons right">perm_identity</i>Login</a></li>

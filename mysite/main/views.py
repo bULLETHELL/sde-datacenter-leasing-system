@@ -11,13 +11,20 @@ from datetime import date
 def homepage(request):
     return render(request=request,
                   template_name='main/home.html',
-                  context={'loginForm': LoginForm})
+                  context={'loginForm': LoginForm, 'username': request.user.username})
 
 
-def profile(request):
+def profile(request, username):
+    username = request.user.username
     return render(request=request,
                   template_name='main/profile.html',
-                  context={'loginForm': LoginForm})
+                  context={'loginForm': LoginForm, 'username':username})
+
+def profile_settings(request, username):
+    username = request.user.username
+    return render(request=request,
+                  template_name='main/profile/settings.html',
+                  context={'loginForm':LoginForm, 'username':username})
 
 
 def lease(request):
