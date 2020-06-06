@@ -31,7 +31,13 @@ def lease(request):
 
 def lease_request(request):
     if request.method == 'POST':
-        print(request.POST.get("itemID"))
+        itemId = request.POST.get("itemID")
+        loanedItem = InventoryItem.objects.get(pk=itemId)
+        loanStartDate = request.POST.get("loanStartDate")
+        loanEndDate = request.POST.get("loanEndDate")
+        loaningUser = request.POST.get("loaningUser")
+        loanPurpose = request.POST.get("loanPurpose")
+        print(loanedItem, loanStartDate, loanEndDate, loaningUser, loanPurpose)
         return redirect("main:lease")
 
     #leaseForm = LeaseForm
