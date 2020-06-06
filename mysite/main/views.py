@@ -44,7 +44,17 @@ def lease_request(request):
         loanEndDate = request.POST.get("loanEndDate")
         loaningUser = request.POST.get("loaningUser")
         loanPurpose = request.POST.get("loanPurpose")
-        print(loanedItem, loanStartDate, loanEndDate, loaningUser, loanPurpose)
+
+        startDateSplit = loanStartDate.split('/')
+        endDateSplit = loanEndDate.split('/')
+        startDateFixed = f"{startDateSplit[2]}-{startDateSplit[1]}-{startDateSplit[0]}"
+        endDateFixed = f"{endDateSplit[2]}-{endDateSplit[1]}-{endDateSplit[0]}"
+
+        #newLoan = Loan(itemId, startDateFixed, endDateFixed, loaningUser, loanPurpose)
+        #newLoan.save()
+        loanedItem.itemAvailable = False
+        loanedItem.save()
+        print(loanedItem, loanStartDate, loanEndDate, loaningUser, loanPurpose, startDateFixed, endDateFixed)
         return redirect("main:lease")
 
     #leaseForm = LeaseForm
