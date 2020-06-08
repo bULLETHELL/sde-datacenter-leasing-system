@@ -12,6 +12,7 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("login/", views.login_request, name="login"),
     path("reserve/", views.reserve, name="reserve"),
+    path("reservation_request/", views.reserve_request, name="reservation_request"),
     path("lease_request/", views.lease_request, name="lease_request"),
     path("profile/<str:username>/settings", views.profile_settings, name="profile_settings"),
 ]

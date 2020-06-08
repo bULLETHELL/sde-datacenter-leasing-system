@@ -87,7 +87,7 @@ class Reservation(models.Model):
     reservationStartDate = models.DateField(auto_now=True)
     reservationEndDate = models.DateField()
     reservedFor = models.ForeignKey(User, related_name="reservedForUser", on_delete=models.CASCADE)
-    reservationPurpose = models.ForeignKey(Purpose, on_delete=models.CASCADE)
+    reservationPurpose = models.TextField(max_length=1000)
 
     def __str__(self):
         return f"{self.reservingUser} reserved {self.reservedItem} for {self.reservedFor}"
