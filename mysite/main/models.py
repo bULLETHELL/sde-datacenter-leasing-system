@@ -67,7 +67,7 @@ class Loan(models.Model):
     loanStartDate = models.DateField(auto_now_add=True)
     loanEndDate = models.DateField()
     loaningUser = models.ForeignKey(User, on_delete=models.CASCADE)
-    loanPurpose = models.ForeignKey(Purpose, on_delete=models.CASCADE)
+    loanPurpose = models.TextField(max_length=1000)
 
     def __str__(self):
         return f"{self.loaningUser} - {self.loanedItem}"
