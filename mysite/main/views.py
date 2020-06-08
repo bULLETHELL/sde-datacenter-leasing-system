@@ -18,13 +18,14 @@ def profile(request, username):
     username = request.user.username
     return render(request=request,
                   template_name='main/profile.html',
-                  context={'loginForm': LoginForm, 'username':username})
+                  context={'loginForm': LoginForm, 'username': username})
+
 
 def profile_settings(request, username):
     username = request.user.username
     return render(request=request,
                   template_name='main/profile/settings.html',
-                  context={'loginForm':LoginForm, 'username':username})
+                  context={'loginForm': LoginForm, 'username': username})
 
 
 def lease(request):
@@ -34,7 +35,10 @@ def lease(request):
     # todayFormattedCorrectly = f"{todayList[0]}-{todayList[1]}-{todayList[2]}"
     return render(request=request,
                   template_name='main/lease.html',
-                  context={'loginForm':LoginForm, 'inventoryItems':InventoryItem.objects.all, 'inventoryItemTypes':InventoryItemType.objects.all, 'loans':Loan.objects.all, 'leaseForm':LeaseForm, 'datetoday':todayFormatted, 'user':request.user})
+                  context={'loginForm': LoginForm, 'inventoryItems': InventoryItem.objects.all,
+                           'inventoryItemTypes': InventoryItemType.objects.all, 'loans': Loan.objects.all,
+                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'user': request.user})
+
 
 def lease_request(request):
     if request.method == 'POST':
@@ -50,18 +54,20 @@ def lease_request(request):
         startDateFixed = f"{startDateSplit[2]}-{startDateSplit[1]}-{startDateSplit[0]}"
         endDateFixed = f"{endDateSplit[2]}-{endDateSplit[1]}-{endDateSplit[0]}"
 
-        #newLoan = Loan(itemId, startDateFixed, endDateFixed, loaningUser, loanPurpose)
-        #newLoan.save()
+        newLoan = Loan(loanedItem=loanedItem, loanStartDate=startDateFixed, loanEndDate=endDateFixed,
+                       loaningUser=User.objects.get(username=loaningUser), loanPurpose=loanPurpose)
+        newLoan.save()
         loanedItem.itemAvailable = False
         loanedItem.save()
         print(loanedItem, loanStartDate, loanEndDate, loaningUser, loanPurpose, startDateFixed, endDateFixed)
         return redirect("main:lease")
 
-    #leaseForm = LeaseForm
+    # leaseForm = LeaseForm
 
-    #return render(request=request,
+    # return render(request=request,
     #              template_name='main/lease.html',
     #              context={'leaseForm': leaseForm})
+
 
 def login_request(request):
     if request.method == 'POST':
