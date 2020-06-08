@@ -36,9 +36,55 @@ def lease(request):
                   template_name='main/lease.html',
                   context={'loginForm':LoginForm, 'inventoryItems':InventoryItem.objects.all, 'inventoryItemTypes':InventoryItemType.objects.all, 'loans':Loan.objects.all, 'leaseForm':LeaseForm, 'datetoday':todayFormatted, 'user':request.user})
 
+def reserve(request):
+    today = date.today()
+    todayFormatted = today.strftime("%d/%m/%Y")
+    # todayList = todayFormatted.split('/')
+    # todayFormattedCorrectly = f"{todayList[0]}-{todayList[1]}-{todayList[2]}"
+    return render(request=request,
+                  template_name='main/reservation.html',
+                  context={'loginForm':LoginForm, 'inventoryItems':InventoryItem.objects.all, 'inventoryItemTypes':InventoryItemType.objects.all, 'loans':Loan.objects.all, 'leaseForm':LeaseForm, 'datetoday':todayFormatted, 'user':request.user})
+
+def reserve_request(request):
+    if request.method == 'POST':
+        itemId = request.POST.get("itemID")
+        loanedItem = InventoryItem.objects.get(pk=itemId)
+        loanStartDate = request.POST.get("loanStartDate")
+        loanEndDate = request.POST.get("loanEndDate")
+        loaningUser = request.POST.get("loaningUser")
+        loanPurpose = request.POST.get("loanPurpose")
+
+        startDateSplit = loanStartDate.split('/')
+        endDateSplit = loanEndDate.split('/')
+        startDateFixed = f"{startDateSplit[2]}-{startDateSplit[1]}-{startDateSplit[0]}"
+        endDateFixed = f"{endDateSplit[2]}-{endDateSplit[1]}-{endDateSplit[0]}"
+
+        #newLoan = Loan(itemId, startDateFixed, endDateFixed, loaningUser, loanPurpose)
+        #newLoan.save()
+        loanedItem.itemAvailable = False
+        loanedItem.save()
+        print(loanedItem, loanStartDate, loanEndDate, loaningUser, loanPurpose, startDateFixed, endDateFixed)
+        return redirect("main:reservation")
+
 def lease_request(request):
     if request.method == 'POST':
-        print(request.POST.get("itemID"))
+        itemId = request.POST.get("itemID")
+        loanedItem = InventoryItem.objects.get(pk=itemId)
+        loanStartDate = request.POST.get("loanStartDate")
+        loanEndDate = request.POST.get("loanEndDate")
+        loaningUser = request.POST.get("loaningUser")
+        loanPurpose = request.POST.get("loanPurpose")
+
+        startDateSplit = loanStartDate.split('/')
+        endDateSplit = loanEndDate.split('/')
+        startDateFixed = f"{startDateSplit[2]}-{startDateSplit[1]}-{startDateSplit[0]}"
+        endDateFixed = f"{endDateSplit[2]}-{endDateSplit[1]}-{endDateSplit[0]}"
+
+        #newLoan = Loan(itemId, startDateFixed, endDateFixed, loaningUser, loanPurpose)
+        #newLoan.save()
+        loanedItem.itemAvailable = False
+        loanedItem.save()
+        print(loanedItem, loanStartDate, loanEndDate, loaningUser, loanPurpose, startDateFixed, endDateFixed)
         return redirect("main:lease")
 
     #leaseForm = LeaseForm

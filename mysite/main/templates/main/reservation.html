@@ -16,7 +16,7 @@
     </thead>
     <tbody>
         {% for item in inventoryItems %}
-        {% if item.IsAvailable == true and item.itemType == itemType %}
+        {% if item.itemAvailable == True and item.itemType == itemType %}
         <tr>
             <td>{{item.itemName}}</td>
             <td>{{item.itemOS}}</td>
@@ -36,7 +36,7 @@
             </div>
             {% endif %}
             <!-- Modal Trigger Loan -->
-            <td><a class="waves-effect waves-light btn modal-trigger" href="#{{item.itemName}}{{item.id}}">Lease Item</a></td>
+            <td><a class="waves-effect waves-light btn modal-trigger" href="#{{item.itemName}}{{item.id}}">Reserve Item</a></td>
 
             <!-- Modal Structure Loan -->
             <div id="{{item.itemName}}{{item.id}}" class="modal">
@@ -47,15 +47,17 @@
                         <input type="hidden" name="itemID" value="{{item.id}}">
                         <label>Item</label><br>
                         <input type="text" name="itemName" value="{{item.itemName}}" readonly="readonly">
+                        <label>Reserving User</label><br>
+                        <input type="text" name="reservingUser" value="{{user.username}}" readonly="readonly">
                         <label>Loan Start Date</label><br>
-                        <input type="text" name="loanStartDate" value="{{datetoday}}" readonly="readonly">
+                        <input type="text" class="datepicker" name="loanStartDate" value="{{datetoday}}">
                         <label>Loan End Date</label><br>
                         <input type="text" class="datepicker" name="loanEndDate" value="{{datetoday}}">
-                        <label>Loaning User</label><br>
-                        <input type="text" name="loaningUser" value="{{user.username}}" readonly="readonly">
-                        <label>Loan Purpose</label><br>
-                        <input type="text" name="loanPurpose" placeholder="Purpose for loan">
-                        <button class="btn waves-effect waves-light" type="submit">Lease Item</button>
+                        <label>Reserve for</label><br>
+                        <input type="text" name="reservedFor" placeholder="User to assign the loan to">
+                        <label>Reservation Purpose</label><br>
+                        <input type="text" name="reservationPurpose" placeholder="Purpose for reservation">
+                        <button class="btn waves-effect waves-light" type="submit">Reserve Item</button>
                     </form>
                 </div>
             </div>
