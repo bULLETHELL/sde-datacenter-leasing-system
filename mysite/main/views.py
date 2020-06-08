@@ -20,11 +20,17 @@ def profile(request, username):
                   template_name='main/profile.html',
                   context={'loginForm': LoginForm, 'username': username})
 
+def loans(request, username):
+    username = request.user.username
+    return render(request=request,
+                  template_name='main/loans.html'.format(username),
+                  context={'loginForm': LoginForm, 'username': username})
+
 
 def profile_settings(request, username):
     username = request.user.username
     return render(request=request,
-                  template_name='main/profile/settings.html',
+                  template_name='main/settings.html',
                   context={'loginForm': LoginForm, 'username': username})
 
 

@@ -16,7 +16,7 @@
     </thead>
     <tbody>
         {% for item in inventoryItems %}
-        {% if item.itemAvailable == True and item.itemType == itemType %}
+        {% if item.itemType == itemType %}
         <tr>
             <td>{{item.itemName}}</td>
             <td>{{item.itemOS}}</td>
@@ -50,7 +50,7 @@
                         <label>Reserving User</label><br>
                         <input type="text" name="reservingUser" value="{{user.username}}" readonly="readonly">
                         <label>Loan Start Date</label><br>
-                        <input type="text" class="datepicker" name="loanStartDate" value="{{datetoday}}">
+                        <input type="text" class="datepicker" name="loanStartDate" value="{{item.loanEndDate}}">
                         <label>Loan End Date</label><br>
                         <input type="text" class="datepicker" name="loanEndDate" value="{{datetoday}}">
                         <label>Reserve for</label><br>
