@@ -2,7 +2,6 @@
 <head>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/slider.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -25,27 +24,26 @@
             <li><a href="/profile/{{username}}">{{user.username}}</a></li>
             <li><a href="/logout">Logout</a></li>
             {% else %}
-            <li><a onclick="loginShow()"><i class="material-icons right">perm_identity</i>Login</a></li>
+            <li><a class="waves-effect waves-light btn modal-trigger" href="#loginModal"><i class="material-icons right">perm_identity</i>Login</a></li>
             {% endif %}
         </ul>
         </div>
     </nav>
-    <form id="login" class="col s12 login_box" method="POST" action="/login/">
-      <div class="row">
-        {% csrf_token %}
-        <div class="input-field col s12">
-          {{loginForm.username}}
-        </div>
-        <div class="input-field col s12">
-          {{loginForm.password}}
-        </div>
-        <div class="col s12">
-          <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Login</button>
-          <p class="center">Not registered? <a href="/register">Create an account</a></p>
-        </div>
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <form id="login" class="col s12 login_box" method="POST" action="/login/">
+        <h4>Login</h4>
+          {% csrf_token %}
+          {{loginForm.as_p}}
+          <div class="col s12">
+            <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Login</button>
+            <p class="center">Not registered? <a href="/register">Create an account</a></p>
+          </div>
+        </form>
       </div>
-    </form>
-    <script type="text/javascript" src="{% static 'js/login.js' %}"></script>
+    </div>
+    <!-- Modal trigger -->
+    <script>$(document).ready(function(){$('.modal').modal();});</script>
     {% block content %}
     {% endblock content %}
 </body>
