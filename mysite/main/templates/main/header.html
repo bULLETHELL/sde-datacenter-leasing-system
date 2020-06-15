@@ -44,6 +44,11 @@
     </div>
     <!-- Modal trigger -->
     <script>$(document).ready(function(){$('.modal').modal();});</script>
+    {% if messages %}
+        {% for message in messages %}
+          <script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:5000});</script>
+        {% endfor %}
+    {% endif %}
     {% block content %}
     {% endblock content %}
 </body>

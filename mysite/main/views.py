@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import NewUserForm, LoginForm, LeaseForm
 from .models import InventoryItem, InventoryItemType, Loan, User, Reservation
 from datetime import date
-
+from django.contrib import messages
 
 # Create your views here.
 def homepage(request):
@@ -65,7 +65,7 @@ def reserve(request):
                   template_name='main/reservation.html',
                   context={'loginForm': LoginForm, 'inventoryItems': InventoryItem.objects.all,
                            'inventoryItemTypes': InventoryItemType.objects.all, 'loans': Loan.objects.all,
-                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'user': request.user})
+                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'user': request.user, 'users' : User.objects.all})
 
 
 def reserve_request(request):
@@ -120,17 +120,19 @@ def login_request(request):
     if request.method == 'POST':
         form = LoginForm(request=request, data=request.POST)
         if form.is_valid():
+            messages.success(request, 'testing lul')
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+                messages.success(request, f"Logged in: {username}")
                 return redirect('/')
 
     form = LoginForm
-    return render(request=request,
-                  template_name='main/header.html',
-                  context={'form': form})
+    for msg in form.error_messages:
+        messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    return redirect('main:homepage')
 
 
 def logout_request(request):
@@ -141,16 +143,18 @@ def logout_request(request):
 def register(request):
     if request.method == 'POST':
         form = NewUserForm(request.POST)
+        print(form.errors.as_data())
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
-            login(request, user)
+            messages.error(request, "Waiting for admin to activate user, you wont be able to log in till then")
+            messages.success(request, f"New account created: {username}")
             return redirect('main:homepage')
 
         else:
-            return render(request=request,
-                          template_name='main/register.html',
-                          context={'form': form, 'loginForm': LoginForm})
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}: {form.error_messages[msg]}")
+            return redirect('main:homepage')
 
     form = NewUserForm
     return render(request=request,

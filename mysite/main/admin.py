@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from .models import InventoryItem, InventoryItemType, ItemDescription, ItemOS, ItemSoftware, Loan, Purpose, \
-    Reservation
+    Reservation, VM, VMLoan
 
 # admin.site.register(User)
 
@@ -13,3 +13,5 @@ admin.site.register(ItemSoftware)
 admin.site.register(Loan)
 admin.site.register(Purpose)
 admin.site.register(Reservation)
+admin.site.register(VM)
+admin.site.register(VMLoan)
