@@ -65,7 +65,7 @@ def reserve(request):
                   template_name='main/reservation.html',
                   context={'loginForm': LoginForm, 'inventoryItems': InventoryItem.objects.all,
                            'inventoryItemTypes': InventoryItemType.objects.all, 'loans': Loan.objects.all,
-                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'user': request.user, 'users' : User.objects.all})
+                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'curUser': request.user, 'users' : User.objects.all})
 
 
 def reserve_request(request):
