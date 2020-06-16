@@ -7,6 +7,7 @@ from .models import InventoryItem, InventoryItemType, Loan, User, Reservation
 from datetime import date
 from django.contrib import messages
 
+
 # Create your views here.
 def homepage(request):
     return render(request=request,
@@ -110,7 +111,6 @@ def login_request(request):
     if request.method == 'POST':
         form = LoginForm(request=request, data=request.POST)
         if form.is_valid():
-            messages.success(request, 'testing lul')
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
@@ -119,9 +119,8 @@ def login_request(request):
                 messages.success(request, f"Logged in: {username}")
                 return redirect('/')
 
-    form = LoginForm
-    for msg in form.error_messages:
-        messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    messages.error(request,
+                   f"login failed, the login details provided were either wrong or the given user has not yet been activated, if the latter, contact helpdesk")
     return redirect('main:homepage')
 
 

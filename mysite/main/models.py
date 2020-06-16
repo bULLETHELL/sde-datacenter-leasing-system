@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -60,7 +59,8 @@ class VM(models.Model):
     vmDescription = models.ForeignKey(ItemDescription, on_delete=models.CASCADE)
     vmOS = models.ForeignKey(ItemOS, on_delete=models.CASCADE)
     vmType = models.ForeignKey(InventoryItemType, on_delete=models.CASCADE)
-    #vmHost = models.CharField(max_length=50)
+    # vmHost = models.CharField(max_length=50)
+
 
 class Loan(models.Model):
     loanedItem = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
@@ -91,3 +91,11 @@ class Reservation(models.Model):
 
     def __str__(self):
         return f"{self.reservingUser} reserved {self.reservedItem} for {self.reservedFor}"
+
+
+class Returns(models.Model):
+    loanedItem = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
+    loanStartDate = models.DateField()
+    loanReturnDate = models.DateField()
+    returningUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    loanPurpose = models.TextField(max_length=1000)
