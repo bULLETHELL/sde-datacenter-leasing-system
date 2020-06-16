@@ -112,6 +112,7 @@ def lease_request(request):
         newLoan.save()
         loanedItem.itemAvailable = False
         loanedItem.save()
+        messages.success(request, f"Loan successful, {loanedItem} loaned to {loaningUser}")
         print(loanedItem, loanStartDate, loanEndDate, loaningUser, loanPurpose, startDateFixed, endDateFixed)
         return redirect("main:lease")
 
