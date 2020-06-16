@@ -28,5 +28,17 @@ class LoginForm(AuthenticationForm):
     password = forms.CharField(widget=PasswordInput(attrs={'placeholder': 'PASSWORD'}))
 
 
-class LeaseForm(forms.Form):
-    loanPurpose = forms.ModelChoiceField(queryset=Purpose.objects)
+class LoanForm(forms.ModelForm):
+    loanedItem = forms.CharField(initial=123)
+
+    class Meta:
+        model = Loan
+        fields = ('loanedItem', 'loanEndDate', 'loaningUser', 'loanPurpose',)
+
+
+class LeaseForm(LoanForm):
+    itemName = forms.CharField()
+    loanStartDate = forms.CharField()
+
+    class Meta(LoanForm.Meta):
+        fields = ('itemName', ) + LoanForm.Meta.fields
