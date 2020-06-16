@@ -11,17 +11,17 @@
 <body>
     <nav>
         <div class="nav-wrapper">
-        <a href="/" class="brand-logo">SDE Udlån</a>
+        <a href="/" class="brand-logo"><img id="navlogo" alt="Home" src="{% static 'img/sde-logo.svg' %}"></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="/">Forside</a></li>
             <li><a href="/lease">Lån</a></li>
             {% if user.is_authenticated %}
+            <li><a href="/return">Aflever</a></li>
+            <li><a href="/reserve">Reserver</a></li>
             {% if user.is_superuser %}
             <li><a href="/admin">Admin</a></li>
             {% endif %}
-            <li><a href="/return">Aflever</a></li>
-            <li><a href="/reserve">Reserver</a></li>
-            <li><a href="/profile/{{username}}">{{user.username}}</a></li>
+            <li><a href="/profile">{{user.username}}</a></li>
             <li><a href="/logout">Logout</a></li>
             {% else %}
             <li><a class="waves-effect waves-light btn modal-trigger" href="#loginModal"><i class="material-icons right">perm_identity</i>Login</a></li>
@@ -42,6 +42,7 @@
         </form>
       </div>
     </div>
+    <script>$(document).ready(function() { $("#navlogo").css("height", $(".nav-wrapper").height()); });</script>
     <!-- Modal trigger -->
     <script>$(document).ready(function(){$('.modal').modal();});</script>
     {% if messages %}

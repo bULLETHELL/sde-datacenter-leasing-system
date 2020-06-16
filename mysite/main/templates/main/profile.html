@@ -1,15 +1,93 @@
 {% extends 'main/header.html' %}
 <body>
 {% block content %}
-  <ul id="slide-out" class="sidenav">
-    <h3>{{username}}</h3>
-    <li><a href="settings.html">Settings</a></li>
-    <li><a href="/loans/">My Loans</a></li>
-    <li><div class="divider"></div></li>
-    <li><a class="subheader">Subheader</a></li>
-    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-  </ul>
-  <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+<ul id="slide-out" class="sidenav">
+  <h3>{{username}}</h3>
+  <li><a href="#loans">My Loans</a></li>
+  <li><a href="#reservations">My Reservations</a></li>
+  <li><a href="#settings">Settings</a></li>
+</ul>
+<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+<div class="container">
+  <h4 id="loans">My Loans</h4>
+  {% if cur_user_loans.count() > 0 %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Loan Start Date</th>
+        <th>Loan End Date</th>
+        <th>Loan Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for loan in cur_user_loans %}
+      <tr>
+        <td>{{loan.loanedItem.itemName}}</td>
+        <td>{{loan.loanStartDate}}</td>
+        <td>{{loan.loanEndDate}}</td>
+        <td>{{loan.loanPurpose}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>You currently have no loans</p>
+  {% endif %}
+  <h4 id="reservations">My Reservations</h4>
+  <h5>Reserved For You</h5>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Reserving User</th>
+        <th>Reservation Start Date</th>
+        <th>Reservation End Date</th>
+        <th>Reserved For</th>
+        <th>Reservation Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for reservation in reservations_for_cur_user %}
+      <tr>
+        <td>{{reservation.reservedItem.itemName}}</td>
+        <td>{{reservation.reservingUser}}</td>
+        <td>{{reservation.reservationStartDate}}</td>
+        <td>{{reservation.reservationEndDate}}</td>
+        <td>{{reservation.reservedFor}}</td>
+        <td>{{reservation.reservationPurpose}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h5>Reserved By You</h5>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Reserving User</th>
+        <th>Reservation Start Date</th>
+        <th>Reservation End Date</th>
+        <th>Reserved For</th>
+        <th>Reservation Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for reservation in reservations_by_cur_user %}
+      <tr>
+        <td>{{reservation.reservedItem.itemName}}</td>
+        <td>{{reservation.reservingUser}}</td>
+        <td>{{reservation.reservationStartDate}}</td>
+        <td>{{reservation.reservationEndDate}}</td>
+        <td>{{reservation.reservedFor}}</td>
+        <td>{{reservation.reservationPurpose}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h4 id="settings">Settings</h4>
+</div>
+
 <!-- Sidenav trigger -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
