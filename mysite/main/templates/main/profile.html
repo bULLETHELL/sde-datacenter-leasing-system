@@ -36,6 +36,7 @@
   {% endif %}
   <h4 id="reservations">My Reservations</h4>
   <h5>Reserved For You</h5>
+  {% if reservations_for_cur_user.count > 0 %}
   <table>
     <thead>
       <tr>
@@ -60,7 +61,11 @@
       {% endfor %}
     </tbody>
   </table>
+  {% else %}
+  <p>You don't have any items reserved for you</p>
+  {% endif %}
   <h5>Reserved By You</h5>
+  {% if reservations_by_cur_user.count > 0 %}
   <table>
     <thead>
       <tr>
@@ -85,6 +90,9 @@
       {% endfor %}
     </tbody>
   </table>
+  {% else %}
+  <p>You haven't reserved any items</p>
+  {% endif %}
   <h4 id="settings">Settings</h4>
 </div>
 
