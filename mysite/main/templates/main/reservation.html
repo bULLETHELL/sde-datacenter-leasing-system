@@ -42,19 +42,24 @@
             <div id="{{item.itemName}}{{item.id}}" class="modal">
                 <div class="modal-content">
                     <h4>{{item.itemName}}</h4>
-                    <form method="POST" action="/reservation_request/">
+                    <form method="POST" action="/reservation_request/" id="reserveForm">
                         {% csrf_token %}
                         <input type="hidden" name="itemID" value="{{item.id}}">
                         <label>Item</label><br>
                         <input type="text" name="itemName" value="{{item.itemName}}" readonly="readonly">
                         <label>Reserving User</label><br>
-                        <input type="text" name="reservingUser" value="{{user.username}}" readonly="readonly">
+                        <input type="text" name="reservingUser" value="{{curUser.username}}" readonly="readonly">
                         <label>Loan Start Date</label><br>
                         <input type="text" class="datepicker" name="reservationStartDate" value="{{datetoday}}">
                         <label>Loan End Date</label><br>
                         <input type="text" class="datepicker" name="reservationEndDate" value="{{datetoday}}">
                         <label>Reserve for</label><br>
-                        <input type="text" name="reservedFor" placeholder="User to assign the loan to">
+                        <select class="input-field col s12" name="reservedFor" form="reserveForm">
+                            <option value="" disabled selected>Choose user to reserve item for</option>
+                            {% for user in users %}
+                            <option value="{{user.username}}">{{user.username}}</option>
+                            {% endfor %}
+                        </select>
                         <label>Reservation Purpose</label><br>
                         <input type="text" name="reservationPurpose" placeholder="Purpose for reservation">
                         <button class="btn waves-effect waves-light" type="submit">Reserve Item</button>
@@ -63,7 +68,10 @@
             </div>
             <!-- Modal trigger -->
             <script>$(document).ready(function(){$('.modal').modal();});</script>
+            <!-- Date Picker -->
             <script>$(document).ready(function(){$('.datepicker').datepicker({format: 'dd/mm/yyyy'});});</script>
+            <!-- Select -->
+            <script>$(document).ready(function(){$('select').formSelect();});</script>
         </tr>
         {% endif %}
         {% endfor %}

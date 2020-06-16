@@ -14,24 +14,13 @@ def homepage(request):
                   context={'loginForm': LoginForm, 'username': request.user.username})
 
 
-def profile(request, username):
-    username = request.user.username
+def profile(request):
     return render(request=request,
                   template_name='main/profile.html',
-                  context={'loginForm': LoginForm, 'username': username})
-
-def loans(request, username):
-    username = request.user.username
-    return render(request=request,
-                  template_name='main/loans.html'.format(username),
-                  context={'loginForm': LoginForm, 'username': username})
-
-
-def profile_settings(request, username):
-    username = request.user.username
-    return render(request=request,
-                  template_name='main/settings.html',
-                  context={'loginForm': LoginForm, 'username': username})
+                  context={'loginForm': LoginForm, 'username': request.user.username,
+                           'cur_user_loans': Loan.objects.filter(loaningUser=request.user),
+                           'reservations_for_cur_user': Reservation.objects.filter(reservedFor=request.user),
+                           'reservations_by_cur_user': Reservation.objects.filter(reservingUser=request.user),})
 
 
 def lease(request):
@@ -65,7 +54,7 @@ def reserve(request):
                   template_name='main/reservation.html',
                   context={'loginForm': LoginForm, 'inventoryItems': InventoryItem.objects.all,
                            'inventoryItemTypes': InventoryItemType.objects.all, 'loans': Loan.objects.all,
-                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'user': request.user, 'users' : User.objects.all})
+                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'curUser': request.user, 'users' : User.objects.all})
 
 
 def reserve_request(request):
