@@ -36,9 +36,10 @@ class LoanForm(forms.ModelForm):
         fields = ('loanedItem', 'loanEndDate', 'loaningUser', 'loanPurpose',)
 
 
-class LeaseForm(LoanForm):
+class LeaseForm(forms.Form):
+    itemId = forms.IntegerField()
     itemName = forms.CharField()
     loanStartDate = forms.CharField()
-
-    class Meta(LoanForm.Meta):
-        fields = ('itemName', ) + LoanForm.Meta.fields
+    loanEndDate = forms.CharField()
+    loaningUser = forms.CharField()
+    loanPurpose = forms.CharField()
