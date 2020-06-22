@@ -9,6 +9,8 @@
 </ul>
 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 <div class="container">
+  {% csrf_token %}
+  <form method="POST" id="return_form"></form>
   <h4 id="loans">My Loans</h4>
   {% if cur_user_loans.count > 0 %}
   <table>
@@ -27,6 +29,9 @@
         <td>{{loan.loanStartDate}}</td>
         <td>{{loan.loanEndDate}}</td>
         <td>{{loan.loanPurpose}}</td>
+        <td>
+          <button class="btn waves-effect waves-light" type="submit" form="return_form" value="{{loan.loanedItem}}" name="return_button">Return</button>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
@@ -94,6 +99,7 @@
   <p>You haven't reserved any items</p>
   {% endif %}
   <h4 id="settings">Settings</h4>
+
 </div>
 
 <!-- Sidenav trigger -->
