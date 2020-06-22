@@ -43,7 +43,7 @@ def returnLoan(request):
                   template_name='main/return.html',
                   context={'loginForm': LoginForm, 'inventoryItems': InventoryItem.objects.all,
                            'inventoryItemTypes': InventoryItemType.objects.all, 'loans': Loan.objects.all,
-                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'user': request.user})
+                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'user': request.user, 'cur_user_loans': Loan.objects.filter(loaningUser=request.user)})
 
 
 def reserve(request):
