@@ -9,8 +9,10 @@
 </ul>
 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 <div class="container">
-  {% csrf_token %}
-  <form method="POST" id="return_form"></form>
+  <form method="POST" action="/return_request/" id="return_form">
+      {% csrf_token %}
+  </form>
+
   <h4 id="loans">My Loans</h4>
   {% if cur_user_loans.count > 0 %}
   <table>
@@ -30,7 +32,7 @@
         <td>{{loan.loanEndDate}}</td>
         <td>{{loan.loanPurpose}}</td>
         <td>
-          <button class="btn waves-effect waves-light" type="submit" form="return_form" value="{{loan.loanedItem}}" name="return_button">Return</button>
+          <button class="btn waves-effect waves-light" type="submit" form="return_form" value="{{loan.loanedItem.id}}" name="return_button">Return</button>
         </td>
       </tr>
       {% endfor %}

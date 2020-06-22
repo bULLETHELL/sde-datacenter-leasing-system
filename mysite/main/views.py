@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import NewUserForm, LoginForm, LeaseForm
-from .models import InventoryItem, InventoryItemType, Loan, User, Reservation
+from .models import InventoryItem, InventoryItemType, Loan, User, Reservation, Returns
 from datetime import date
 from django.contrib import messages
 
@@ -43,7 +43,8 @@ def returnLoan(request):
                   template_name='main/return.html',
                   context={'loginForm': LoginForm, 'inventoryItems': InventoryItem.objects.all,
                            'inventoryItemTypes': InventoryItemType.objects.all, 'loans': Loan.objects.all,
-                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'user': request.user, 'cur_user_loans': Loan.objects.filter(loaningUser=request.user)})
+                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'user': request.user,
+                           'cur_user_loans': Loan.objects.filter(loaningUser=request.user)})
 
 
 def reserve(request):
@@ -82,6 +83,24 @@ def reserve_request(request):
         print(itemId, reservedItem, reservationStartDate, reservationEndDate, reservingUser, reservedFor,
               reservationPurpose)
         return redirect("main:reserve")
+
+
+def return_request(request):
+    if request.method == 'POST':
+        print(request.POST.get)
+        loanedItem = InventoryItem.objects.get(pk=request.POST.get("return_button"))
+        loan = Loan.objects.get(loanedItem=loanedItem)
+
+        newReturn = Returns(loanedItem=loanedItem, loanStartDate=loan.loanStartDate, loanReturnDate=loan.loanEndDate,
+                            returningUser=loan.loaningUser, loanPurpose=loan.loanPurpose)
+        newReturn.save()
+        loan.delete()
+        loanedItem.itemAvailable = True
+        loanedItem.save()
+        messages.success(request, f"the loan {loan} has been returned")
+        print(loanedItem, loan)
+        return redirect("main:profile")
+    return redirect("main:profile")
 
 
 def lease_request(request):

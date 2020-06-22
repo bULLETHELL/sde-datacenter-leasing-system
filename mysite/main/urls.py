@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 
-
 app_name = 'main'  # here for namespacing of urls.
 
 urlpatterns = [
@@ -14,5 +13,6 @@ urlpatterns = [
     path("reserve/", views.reserve, name="reserve"),
     path("reservation_request/", views.reserve_request, name="reservation_request"),
     path("lease_request/", views.lease_request, name="lease_request"),
-    path("return/", views.returnLoan, name="returnLoan")
+    path("return/", views.returnLoan, name="returnLoan"),
+    path("return_request/", views.return_request, name="return_request"),
 ]
