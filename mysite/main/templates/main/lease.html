@@ -43,7 +43,7 @@
                         <h4>{{item.itemName}}</h4>
                         <form method="POST" action="/lease_request/">
                             {% csrf_token %}
-                            <input type="hidden" name="itemID" value="{{item.id}}">
+                            <input type="hidden" name="itemId" value="{{item.id}}">
                             <label>Item</label><br>
                             <input type="text" name="itemName" value="{{item.itemName}}" readonly="readonly">
                             <label>Loan Start Date</label><br>

@@ -7,6 +7,7 @@ from .models import InventoryItem, InventoryItemType, Loan, User, Reservation
 from datetime import date
 from django.contrib import messages
 
+
 # Create your views here.
 def homepage(request):
     return render(request=request,
@@ -20,7 +21,7 @@ def profile(request):
                   context={'loginForm': LoginForm, 'username': request.user.username,
                            'cur_user_loans': Loan.objects.filter(loaningUser=request.user),
                            'reservations_for_cur_user': Reservation.objects.filter(reservedFor=request.user),
-                           'reservations_by_cur_user': Reservation.objects.filter(reservingUser=request.user),})
+                           'reservations_by_cur_user': Reservation.objects.filter(reservingUser=request.user), })
 
 
 def lease(request):
@@ -42,7 +43,7 @@ def returnLoan(request):
                   template_name='main/return.html',
                   context={'loginForm': LoginForm, 'inventoryItems': InventoryItem.objects.all,
                            'inventoryItemTypes': InventoryItemType.objects.all, 'loans': Loan.objects.all,
-                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'user': request.user})
+                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'user': request.user, 'cur_user_loans': Loan.objects.filter(loaningUser=request.user)})
 
 
 def reserve(request):
@@ -54,7 +55,8 @@ def reserve(request):
                   template_name='main/reservation.html',
                   context={'loginForm': LoginForm, 'inventoryItems': InventoryItem.objects.all,
                            'inventoryItemTypes': InventoryItemType.objects.all, 'loans': Loan.objects.all,
-                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'curUser': request.user, 'users' : User.objects.all})
+                           'leaseForm': LeaseForm, 'datetoday': todayFormatted, 'curUser': request.user,
+                           'users': User.objects.all, 'cur_user_loans': Loan.objects.filter(loaningUser=request.user)})
 
 
 def reserve_request(request):
@@ -84,33 +86,35 @@ def reserve_request(request):
 
 def lease_request(request):
     if request.method == 'POST':
-        itemId = request.POST.get("itemID")
-        loanedItem = InventoryItem.objects.get(pk=itemId)
-        loanStartDate = request.POST.get("loanStartDate")
-        loanEndDate = request.POST.get("loanEndDate")
-        loaningUser = request.POST.get("loaningUser")
-        loanPurpose = request.POST.get("loanPurpose")
+        form = LeaseForm(request.POST)
+        print(form.errors.as_data())
+        if form.is_valid():
+            itemId = form.cleaned_data.get('itemId')
+            loanedItem = InventoryItem.objects.get(pk=itemId)
+            loanStartDate = form.cleaned_data.get('loanStartDate')
+            loanEndDate = form.cleaned_data.get('loanEndDate')
+            loaningUser = form.cleaned_data.get('loaningUser')
+            loanPurpose = form.cleaned_data.get('loanPurpose')
 
-        startDateSplit = loanStartDate.split('/')
-        endDateSplit = loanEndDate.split('/')
-        startDateFixed = f"{startDateSplit[2]}-{startDateSplit[1]}-{startDateSplit[0]}"
-        endDateFixed = f"{endDateSplit[2]}-{endDateSplit[1]}-{endDateSplit[0]}"
+            startDateSplit = loanStartDate.split('/')
+            endDateSplit = loanEndDate.split('/')
+            startDateFixed = f"{startDateSplit[2]}-{startDateSplit[1]}-{startDateSplit[0]}"
+            endDateFixed = f"{endDateSplit[2]}-{endDateSplit[1]}-{endDateSplit[0]}"
 
-        newLoan = Loan(loanedItem=loanedItem, loanStartDate=startDateFixed, loanEndDate=endDateFixed,
-                       loaningUser=User.objects.get(username=loaningUser), loanPurpose=loanPurpose)
-        newLoan.save()
-        loanedItem.itemAvailable = False
-        loanedItem.save()
-        messages.success(request, f"Loan successful, {loanedItem} loaned to {loaningUser}")
-        print(loanedItem, loanStartDate, loanEndDate, loaningUser, loanPurpose, startDateFixed, endDateFixed)
-        return redirect("main:lease")
+            newLoan = Loan(loanedItem=loanedItem, loanStartDate=startDateFixed, loanEndDate=endDateFixed,
+                           loaningUser=User.objects.get(username=loaningUser), loanPurpose=loanPurpose)
+            newLoan.save()
+            loanedItem.itemAvailable = False
+            loanedItem.save()
+            messages.success(request, f"Loan successful, {loanedItem} loaned to {loaningUser}")
+            print(loanedItem, loanStartDate, loanEndDate, loaningUser, loanPurpose, startDateFixed, endDateFixed)
+            return redirect("main:lease")
 
 
 def login_request(request):
     if request.method == 'POST':
         form = LoginForm(request=request, data=request.POST)
         if form.is_valid():
-            messages.success(request, 'testing lul')
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
@@ -119,9 +123,8 @@ def login_request(request):
                 messages.success(request, f"Logged in: {username}")
                 return redirect('/')
 
-    form = LoginForm
-    for msg in form.error_messages:
-        messages.error(request, f"{msg}: {form.error_messages[msg]}")
+    messages.error(request,
+                   f"login failed, the login details provided were either wrong or the given user has not yet been activated, if the latter, contact helpdesk")
     return redirect('main:homepage')
 
 
