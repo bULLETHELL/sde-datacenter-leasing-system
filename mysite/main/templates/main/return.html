@@ -1,86 +1,36 @@
 {% extends 'main/header.html' %}
 <body>
 {% block content %}
-{% for itemType in inventoryItemTypes %}
-<h3 id="{{itemType}}">{{itemType}}</h3>
-<table>
+<form method="POST" id="return_form">
+    {% csrf_token %}
+</form>
+  <h4 id="loans">My Loans</h4>
+  {% if cur_user_loans.count > 0 %}
+  <table>
     <thead>
-        <tr>
-            <th>Name</th>
-            <th>OS</th>
-            <th>Loan Start Date</th>
-            <th>Loan End Date</th>
-            <th>Status</th>
-
-            {% if itemType == ESXI %}
-            <th>VM</th>
-            {% endif %}
-            <th>Book</th>
-        </tr>
+      <tr>
+        <th>Name</th>
+        <th>Loan Start Date</th>
+        <th>Loan End Date</th>
+        <th>Loan Purpose</th>
+      </tr>
     </thead>
     <tbody>
-        {% for item in inventoryItems %}
-        {% if item.itemAvailable == True and item.itemType == itemType %}
-        <tr>
-            <td>{{item.itemName}}</td>
-            <td>{{item.itemOS}}</td>
-            {% if itemType == ESXI %}
-            <!-- Modal Trigger -->
-            <td><button data-target="#{{item.id}} + VM" class="btn modal-trigger">VM's</button></td>
-
-            <!-- Modal Structure -->
-            <div id="{{item.id}} + VM" class="modal">
-                <div class="modal-content">
-                    <h4>{{item.itemName}}</h4>
-                    <p>A bunch of text</p>
-                </div>
-                <div class="modal-footer">
-                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
-                </div>
-            </div>
-            {% endif %}
-            <!-- Modal Trigger Loan -->
-            <td><a class="waves-effect waves-light btn modal-trigger" href="#{{item.itemName}}{{item.id}}">Reserve Item</a></td>
-
-            <!-- Modal Structure Loan -->
-            <div id="{{item.itemName}}{{item.id}}" class="modal">
-                <div class="modal-content">
-                    <h4>{{item.itemName}}</h4>
-                    <form method="POST" action="/reservation_request/" id="reserveForm">
-                        {% csrf_token %}
-                        <input type="hidden" name="itemID" value="{{item.id}}">
-                        <label>Item</label><br>
-                        <input type="text" name="itemName" value="{{item.itemName}}" readonly="readonly">
-                        <label>Reserving User</label><br>
-                        <input type="text" name="reservingUser" value="{{curUser.username}}" readonly="readonly">
-                        <label>Loan Start Date</label><br>
-                        <input type="text" class="datepicker" name="reservationStartDate" value="{{datetoday}}">
-                        <label>Loan End Date</label><br>
-                        <input type="text" class="datepicker" name="reservationEndDate" value="{{datetoday}}">
-                        <label>Reserve for</label><br>
-                        <select class="input-field col s12" name="reservedFor" form="reserveForm">
-                            <option value="" disabled selected>Choose user to reserve item for</option>
-                            {% for user in users %}
-                            <option value="{{user.username}}">{{user.username}}</option>
-                            {% endfor %}
-                        </select>
-                        <label>Reservation Purpose</label><br>
-                        <input type="text" name="reservationPurpose" placeholder="Purpose for reservation">
-                        <button class="btn waves-effect waves-light" type="submit">Reserve Item</button>
-                    </form>
-                </div>
-            </div>
-            <!-- Modal trigger -->
-            <script>$(document).ready(function(){$('.modal').modal();});</script>
-            <!-- Date Picker -->
-            <script>$(document).ready(function(){$('.datepicker').datepicker({format: 'dd/mm/yyyy'});});</script>
-            <!-- Select -->
-            <script>$(document).ready(function(){$('select').formSelect();});</script>
-        </tr>
-        {% endif %}
-        {% endfor %}
+      {% for loan in cur_user_loans %}
+      <tr>
+        <td>{{loan.loanedItem.itemName}}</td>
+        <td>{{loan.loanStartDate}}</td>
+        <td>{{loan.loanEndDate}}</td>
+        <td>{{loan.loanPurpose}}</td>
+        <td>
+          <button class="btn waves-effect waves-light" type="submit" form="return_form" value="{{loan.loanedItem.id}}" name="return_button">Return</button>
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
-</table>
-{% endfor %}
+  </table>
+  {% else %}
+  <p>You currently have no loans</p>
+  {% endif %}
 {% endblock content %}
 </body>
