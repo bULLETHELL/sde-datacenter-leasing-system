@@ -108,13 +108,14 @@ def return_request(request):
         newReturn = Returns(loanedItem=loanedItem, loanStartDate=loan.loanStartDate, loanReturnDate=loan.loanEndDate,
                             returningUser=loan.loaningUser, loanPurpose=loan.loanPurpose)
         newReturn.save()
+        print(loanedItem.itemSoftware.all())#morten din pik kig her
         loan.delete()
         loanedItem.itemAvailable = True
         loanedItem.save()
         messages.success(request, f"the loan {loan} has been returned")
         print(loanedItem, loan)
-        return redirect("main:profile")
-    return redirect("main:profile")
+        return redirect("/")
+    return redirect("/")
 
 
 def lease_request(request):
