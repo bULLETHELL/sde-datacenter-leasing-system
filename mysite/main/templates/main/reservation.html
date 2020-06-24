@@ -2,7 +2,7 @@
 <body>
 {% block content %}
 {% for itemType in inventoryItemTypes %}
-<h3 id="{{itemType}}">{{itemType}}</h3>
+<h3 id="{{itemType}}">{{itemType|title}}</h3>
 <table>
     <thead>
         <tr>

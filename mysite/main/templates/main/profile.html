@@ -2,7 +2,7 @@
 <body>
 {% block content %}
 <ul id="slide-out" class="sidenav">
-  <h3>{{username}}</h3>
+  <div class="container"><h3>{{username|capfirst}}</h3></div>
   <li><a href="#loans">My Loans</a></li>
   <li><a href="#reservations">My Reservations</a></li>
   <li><a href="#settings">Settings</a></li>

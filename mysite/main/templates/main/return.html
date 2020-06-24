@@ -1,7 +1,7 @@
 {% extends 'main/header.html' %}
 <body>
 {% block content %}
-<form method="POST" id="return_form">
+<form method="POST" action="/return_request/" id="return_form">
     {% csrf_token %}
 </form>
   <h4 id="loans">My Loans</h4>
