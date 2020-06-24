@@ -101,9 +101,20 @@
   <p>You haven't reserved any items</p>
   {% endif %}
   <h4 id="settings">Settings</h4>
-
+  <p>Password: </p>
+  <button data-target="change_password" class="btn modal-trigger">Change Password</button>
+  <!-- Modal Structure -->
+  <div id="change_password" class="modal">
+    <div class="modal-content">
+      <form method="POST" action="/change_password/">
+        {% csrf_token %}
+        {{ change_password_form }}
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+  </div>
 </div>
-
+<script>$(document).ready(function(){$('.modal').modal()})</script>
 <!-- Sidenav trigger -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {

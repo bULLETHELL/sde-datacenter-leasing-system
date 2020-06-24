@@ -15,4 +15,5 @@ urlpatterns = [
     path("lease_request/", views.lease_request, name="lease_request"),
     path("return/", views.returnLoan, name="returnLoan"),
     path("return_request/", views.return_request, name="return_request"),
+    path("change_password/", views.change_password_request, name="change_password"),
 ]

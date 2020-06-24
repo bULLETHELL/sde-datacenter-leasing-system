@@ -8,6 +8,7 @@
         <tr>
             <th>Name</th>
             <th>OS</th>
+            <th>Software</th>
             {% if itemType == ESXI %}
             <th>VM</th>
             {% endif %}
@@ -20,6 +21,7 @@
             <tr>
                 <td>{{item.itemName}}</td>
                 <td>{{item.itemOS}}</td>
+                <td>{{item.itemSoftware.all}}</td>
                 {% if itemType == ESXI %}
                 <!-- Modal Trigger -->
                 <td><button data-target="#{{item.id}} + VM" class="btn modal-trigger">VM's</button></td>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from .forms import NewUserForm, LoginForm, LeaseForm
 from .models import InventoryItem, InventoryItemType, Loan, User, Reservation, Returns
 from datetime import date
@@ -18,10 +18,24 @@ def homepage(request):
 def profile(request):
     return render(request=request,
                   template_name='main/profile.html',
-                  context={'loginForm': LoginForm, 'username': request.user.username,
+                  context={'loginForm': LoginForm, 'change_password_form': PasswordChangeForm, 'username': request.user.username,
                            'cur_user_loans': Loan.objects.filter(loaningUser=request.user),
                            'reservations_for_cur_user': Reservation.objects.filter(reservedFor=request.user),
                            'reservations_by_cur_user': Reservation.objects.filter(reservingUser=request.user), })
+
+def change_password_request(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Your password was successfully updated!")
+            return redirect('main:profile')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'main/profile.html')
 
 
 def lease(request):
