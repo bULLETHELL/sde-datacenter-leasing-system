@@ -21,7 +21,13 @@
             <tr>
                 <td>{{item.itemName}}</td>
                 <td>{{item.itemOS}}</td>
-                <td>{{item.itemSoftware.all}}</td>
+                <td>
+                    <ul class="collection">
+                        {% for software in item.itemSoftware.all %}
+                        <li class="collection-item">{{software}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
                 {% if itemType == ESXI %}
                 <!-- Modal Trigger -->
                 <td><button data-target="#{{item.id}} + VM" class="btn modal-trigger">VM's</button></td>
