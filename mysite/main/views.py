@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth import logout, login, authenticate, update_session_auth_hash
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from .forms import NewUserForm, LoginForm, LeaseForm
 from .models import InventoryItem, InventoryItemType, Loan, User, Reservation, Returns
@@ -18,7 +18,7 @@ def homepage(request):
 def profile(request):
     return render(request=request,
                   template_name='main/profile.html',
-                  context={'loginForm': LoginForm, 'change_password_form': PasswordChangeForm, 'username': request.user.username,
+                  context={'loginForm': LoginForm, 'change_password_form': PasswordChangeForm(request.user), 'username': request.user.username,
                            'cur_user_loans': Loan.objects.filter(loaningUser=request.user),
                            'reservations_for_cur_user': Reservation.objects.filter(reservedFor=request.user),
                            'reservations_by_cur_user': Reservation.objects.filter(reservingUser=request.user), })
@@ -33,6 +33,7 @@ def change_password_request(request):
             return redirect('main:profile')
         else:
             messages.error(request, 'Please correct the error below.')
+            return redirect('main:profile')
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'main/profile.html')

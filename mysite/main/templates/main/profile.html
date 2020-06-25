@@ -41,6 +41,7 @@
   {% else %}
   <p>You currently have no loans</p>
   {% endif %}
+  <br>
   <h4 id="reservations">My Reservations</h4>
   <h5>Reserved For You</h5>
   {% if reservations_for_cur_user.count > 0 %}
@@ -71,6 +72,7 @@
   {% else %}
   <p>You don't have any items reserved for you</p>
   {% endif %}
+  <br>
   <h5>Reserved By You</h5>
   {% if reservations_by_cur_user.count > 0 %}
   <table>
@@ -100,16 +102,18 @@
   {% else %}
   <p>You haven't reserved any items</p>
   {% endif %}
+  <br>
   <h4 id="settings">Settings</h4>
   <p>Password: </p>
-  <button data-target="change_password" class="btn modal-trigger">Change Password</button>
+  <a class="waves-effect waves-light btn modal-trigger" href="#change_password">Change Password</a>
   <!-- Modal Structure -->
   <div id="change_password" class="modal">
     <div class="modal-content">
+      <h4>Change Password</h4>
       <form method="POST" action="/change_password/">
         {% csrf_token %}
-        {{ change_password_form }}
-        <button type="submit">Save Changes</button>
+        {{ change_password_form.as_p }}
+        <button type="submit" class="waves-effect waves-light btn">Save Changes</button>
       </form>
     </div>
   </div>
